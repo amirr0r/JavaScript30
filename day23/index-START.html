@@ -44,7 +44,7 @@
     .map(voice => `<option value="${voice.name}"> ${voice.name} (${voice.lang})</option>`)
     .join('')
   }
-  const toogle = (startOver = true) => {
+  const toggle = (startOver = true) => {
     speechSynthesis.cancel()
     if (startOver)
     {
@@ -60,12 +60,12 @@
     msg[this.name] = this.value
     toggle()
   }
-  speak.addEventListener('click', toggle)
-  // stop.addEventListener('click', toggle.bind(null, false))
-  stop.addEventListener('click', () => toggle(false))
+  speakButton.addEventListener('click', toggle)
+  // stopButton.addEventListener('click', toggle.bind(null, false))
+  stopButton.addEventListener('click', () => toggle(false))
   speechSynthesis.addEventListener('voiceschanged', populateVoices)
   voicesDropdown.addEventListener('change', setVoice)
-  options.forEach('change', setOption)
+  options.forEach(option => option.addEventListener('change', setOption))
 </script>
 
 </body>
