@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Jeu de la Taupe!</title>
+  <link href='https://fonts.googleapis.com/css?family=Amatic+SC:400,700' rel='stylesheet' type='text/css'>
+   <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>Jeu-de-la-Taupe! <span class="score">0</span></h1>
+  <button>Start!</button>
+  <div class="game">
+    <div class="hole hole1">
+      <div class="mole"></div>
+    </div>
+    <div class="hole hole2">
+      <div class="mole"></div>
+    </div>
+    <div class="hole hole3">
+      <div class="mole"></div>
+    </div>
+    <div class="hole hole4">
+      <div class="mole"></div>
+    </div>
+    <div class="hole hole5">
+      <div class="mole"></div>
+    </div>
+    <div class="hole hole6">
+      <div class="mole"></div>
+    </div>
+  </div>
+
+<script>
+  const start = document.querySelector('button')
+  const holes = document.querySelectorAll('.hole');
+  const scoreBoard = document.querySelector('.score');
+  const moles = document.querySelectorAll('.mole');
+  let   timeUp = false
+  let   lastHole
+
+  const randomTime = (min, max) => Math.round(Math.random() * (max -min) + min)
+  
+  const randomHole = () => {
+    const i = Math.floor(Math.random() * holes.length)
+    const hole = holes[i]
+    if (hole === lastHole) {
+      return randomHole()
+    }
+    lastHole = hole
+    return hole
+  }
+
+  const peep = () => {
+    const time = randomTime(200, 1000)
+    const hole = randomHole()
+    hole.classList.add('up')
+    setTimeout(() => {
+      hole.classList.remove('up')
+      if (!timeUp) {
+        peep()
+      }
+    }, time)
+  }
+
+  const startGame = () => {
+    scoreBoard.textContent = 0
+    timeUp = false
+    peep()
+    setTimeout(() => timeUp = true, 10000)
+  }
+
+  const updateScore = (e) => e.isTrusted ? 
+    scoreBoard.textContent = `${Number(scoreBoard.textContent) + 1}` : console.log('cheater')
+  
+  start.addEventListener('click', startGame)
+  moles.forEach(mole => mole.addEventListener('click', updateScore))
+</script>
+</body>
+</html>
